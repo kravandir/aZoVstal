@@ -1,12 +1,5 @@
 from random import randint
 
-doing = """Выберите действие: 
-1 - Атака\t2 - Восстановить здоровье
-3 - Блок\t4 - Использовать предмет
->>> """
-
-def eblan(why = "Еблан"):
-    print(why)
 # CLASSES {
 
 class Player:
@@ -22,20 +15,20 @@ class Player:
         self.__maxXp     = 10
 
     @property
-    def maxHp(self):
-        return self.__maxHp
-
-    @maxHp.setter
-    def maxHp(self, value):
-        self.__maxHp = value
-
-    @property
     def hp(self):
         return self.__hp
 
     @hp.setter
     def hp(self, value):
         self.__hp = value
+
+    @property
+    def xp(self):
+        return self.__xp
+
+    @xp.setter
+    def xp(self, value):
+        self.__xp = value
 
     @property
     def name(self):
@@ -52,11 +45,28 @@ class Player:
     @attack.setter
     def attack(self, attack):
         self.__attack = attack
+
+    @property
+    def lvl(self):
+        return self.__lvl
+
+    @lvl.setter
+    def lvl(self, value):
+        self.__lvl = value
+
+    #MAX
+    @property
+    def maxHp(self):
+        return self.__maxHp
+
+    @maxHp.setter
+    def maxHp(self, value):
+        self.__maxHp = value
     
 class Pig:
     def __init__(self):
         self.__hp     = 1
-        self.__name   = "Big Pig"
+        self.__name   = "Small Pig"
         self.__attack = 1
 
     @property
@@ -87,6 +97,19 @@ class Pig:
 
 player1 = Player()
 pig     = Pig()
+
+# vars {
+
+doing = """Выберите действие: 
+1 - Атака\t2 - Восстановить здоровье
+3 - Блок\t4 - Использовать предмет
+5 - Общая информация
+>>> """
+Pigs = ["Big Pig", "Xoxlobot", "Svinka", "Xoxkoblyad", "Mr Ponaduseroviy", "Fedor"]
+
+# } shit {
+def eblan(why = "Еблан"):
+    print(why)
 
 def health(value):
     # Checking 
@@ -121,22 +144,50 @@ def get_pig():
     pass
 
 def fight():
+    print(f"Вы встретились с {pig.name}")
     while (player1.hp > 0) or (pig.hp > 0):
-        choice = input(f"Вы встретились с {pig.name} " + doing)
-        if not (isinstance(choice, int)):
+        choice = input(doing)
+        if (isinstance(choice, int)):
+            print("A")
             eblan()
             continue
-        int(choice)
-        if (choice > 4) or (choice < 1):
+        choice = int(choice)
+        if (int(choice) > 5) or (int(choice) < 1):
             eblan()
             continue
-        break
+        #1
+        if choice == 1:
+            attack = get_attack()
+            pig.hp -= attack
+            print(f"Вы снесли свинье {attack} здоровья")
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            pass
+        elif choice == 4:
+            pass
+        elif choice == 5:
+            info = f"""-----------
+{player1.name}:
+HP - {player1.hp}\tAttack - {player1.attack}
+XP - {player1.xp}\tLevel - {player1.lvl}
+-----------
+{pig.name}:
+HP - {pig.hp}\tAttack - {pig.attack}
+-----------"""
+
+            print(info)
+        if player1.hp > 0:
+            ok = 1
+        else:
+            ok = 0
 
 def get_attack():
     RealAttack = player1.attack
     RandAttack = randint(RealAttack - 2, RealAttack + 2)
     return RandAttack
 
+# }
 
 def main():
     
