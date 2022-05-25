@@ -1,5 +1,12 @@
 from random import randint
 
+doing = """Выберите действие: 
+1 - Атака\t2 - Восстановить здоровье
+3 - Блок\t4 - Использовать предмет
+>>> """
+
+def eblan(why = "Еблан"):
+    print(why)
 # CLASSES {
 
 class Player:
@@ -21,7 +28,6 @@ class Player:
     @maxHp.setter
     def maxHp(self, value):
         self.__maxHp = value
-
 
     @property
     def hp(self):
@@ -47,16 +53,40 @@ class Player:
     def attack(self, attack):
         self.__attack = attack
     
-class Pig():
+class Pig:
     def __init__(self):
         self.__hp     = 1
         self.__name   = "Big Pig"
         self.__attack = 1
 
+    @property
+    def hp(self):
+        return self.__hp
+
+    @hp.setter
+    def hp(self, value):
+        self.__hp = value
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        self.__name = name
+
+    @property
+    def attack(self):
+        return self.__attack
+
+    @attack.setter
+    def attack(self, attack):
+        self.__attack = attack
 # }
 
 
 player1 = Player()
+pig     = Pig()
 
 def health(value):
     # Checking 
@@ -81,14 +111,26 @@ def health(value):
 
 def set_name():
     while True:
-        name = input("Enter your name: ")
+        name = input("Введите своё имя: ")
         if len(name) < 30 and len(name) > 2:
             return name
         else:
-            print("The name must not contain more than 30 characters or less then 3 chars!\nTry again")
+            print("Имя не должно содержать более 30 символов или менее 3 символов!\nПопробуйте еще раз")
     
 def get_pig():
     pass
+
+def fight():
+    while (player1.hp > 0) or (pig.hp > 0):
+        choice = input(f"Вы встретились с {pig.name} " + doing)
+        if not (isinstance(choice, int)):
+            eblan()
+            continue
+        int(choice)
+        if (choice > 4) or (choice < 1):
+            eblan()
+            continue
+        break
 
 def get_attack():
     RealAttack = player1.attack
@@ -98,15 +140,12 @@ def get_attack():
 
 def main():
     
-    print("Welcome to the aZoVstal!")
+    print("Добро пожаловать на аZoVсталь!")
     
     player1.name = set_name()
     
-    print("First lvl")
-    print(get_attack())
-    while True:
-        print(player1.hp)
-        value = int(input("Checking hp work\nEnter heal(or damage with minus): "))
-        health(value)
+    print("Уровень первый: вход в подземелья")
+
+    fight()
         
 main()
