@@ -127,9 +127,9 @@ def health(value):
 
     elif value > 0:
         temp = (value + player1.hp) - player1.maxHp
-        if temp <= 0:
+    elif temp <= 0:
             player1.hp += value
-        else:
+    else:
             player1.hp = player1.maxHp
 
 def set_name():
