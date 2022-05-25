@@ -8,6 +8,7 @@ class Player:
         self.__name   = "Player1"
         self.__attack = 2
         self.__xp     = 0
+        self.__lvl    = 1
 
         self.__maxHp     = 10
         self.__maxAttack = 5
