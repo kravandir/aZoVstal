@@ -156,14 +156,17 @@ def get_item(lvl=player1.lvl - 1):
 def fight():
     get_pig()
     print(f"Вы встретились с {pig.name}")
+    turn = 0 # 1 - свиньи ход, 0 наш, если чет не так то капец
     while (player1.hp > 0):
         if (pig.hp < 0):
             break
+        if turn == 1:
+            print("Ход свиньи")
+            turn -=1
         if (pig.hp < 2):
             print("Свинья при смерти!")
         choice = input(doing)
-        if (isinstance(choice, int)):
-            print("A")
+        if not (choice.isdigit()):
             eblan()
             continue
         choice = int(choice)
@@ -172,11 +175,13 @@ def fight():
             continue
         #1
         if choice == 1:
-            attack = get_attack()
+            attack = get_random(player1.attack)
             pig.hp -= attack
             print(f"Вы снесли свинье {attack} здоровья")
         elif choice == 2:
-            health(5)
+            hp = get_random(player1.hp)
+            health(hp)
+            print("Востановленно {hp} здоровья")
         elif choice == 3:
             pass
         elif choice == 4:
@@ -192,15 +197,20 @@ HP - {pig.hp}\tAttack - {pig.attack}
 -----------"""
 
             print(info)
+            turn -=1
         if player1.hp > 0:
             ok = 1
         else:
             ok = 0
+        turn += 1
 
-def get_attack():
-    RealAttack = player1.attack
-    RandAttack = randint(RealAttack - 2, RealAttack + 2)
-    return RandAttack
+    if player1.hp < 0:
+        print("Свинья убила тебя... Ну ты и лох канешн")
+
+def get_random(value):
+    Real = value
+    Rand = randint(Real - 2, Real + 2)
+    return Rand
 
 # }
 
@@ -211,7 +221,6 @@ def main():
     player1.name = set_name()
     
     print("Уровень первый: вход в подземелья")
-    get_item()
     fight()
         
 main()
