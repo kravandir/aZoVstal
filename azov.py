@@ -96,19 +96,50 @@ ryka    = Karman()
 
 # vars {
 
-doing = """Выберите действие: 
+doing = """
+Выберите действие: 
 1 - Атака\t2 - Восстановить здоровье
-3 - Блок\t4 - Использовать предмет
-5 - Общая информация
+3 - Использовать предмет\t4 - Общая информация
 >>> """
 pigNames = ["Big Pig", "Xoxlobot",               "Poklonik Banderi",      "mr Zelensky", "Раненный Иван" "BANDERA"]
 items =    ["Сало",    "Лицензия на сракоёб 2007", "бандеромобиль 2599",  "Мефедрон",    "Чемоданчик"]
 info = ["Кусок сала", "Долмат сдох, поэтому сракоёб потерян навсегда...", "Вот эта хуйня изобретена укропами блять. Взята буквально с боем блять нахуй. Вот вы можете представить себе больное воображение человека который эту ебалу создал.", "Его еще не успел занюхать Zеленский", "ДАВАЙ ДАВАЙ ДАВАЙ УРА"]
 item = "empty"
 info = "empty"
-
+turn = 0
+ending = True
+code = False
 
 # } shit {
+# items {
+def salo():
+    turn -= 2
+    print("Свинья отвлеклась на сало и пропускает 2 хода")
+
+def srakaeb(code = False):
+    if code == False:
+        print("Вы не можете использовать лицензию, тк нету сракоеба")
+        turn -= 1
+    else:
+        print("ЛИЦЕНЗИЯ СРАКОЁБ 2007 АКТИВИРОВАННА")
+        pig.hp -= 999
+        print(f"Сракоёб под рататата 47 ака растрелял {pig.name} и нанёс 999 урона")
+
+def banderomobil():
+    print("Сев в БАНДЕРОМОБИЛЬ он развалился и вы потеряли два хода чтобы выбраться")
+    turn +=2
+
+def meth():
+    turn -= 2
+    print("Свинка занюхнула меф и осталась без сознания на 2 хода")
+
+def chemodanchik():
+    pig.hp = -1
+    print(f"Едва {player1.name} открыл чемоданчик всю азовсталь озарила яркая вспышка. Нет, в чемодане не было противопехотной мины. Правительство США знало что в этом чемодане находились бипки, и если бы хоть одна до них до коснулась до восставшего из ада Бандеры, она бы впитала в себя всю мощь ада. Бидон не мог допустить этого и приказал сбросить ядерную боеголовку на Азовсталь. Ваш персонаж умер, но память о нём будет вечна...")
+    exit(0)
+
+# }
+
 def eblan(why = "Еблан"):
     print(why)
 
@@ -144,7 +175,7 @@ def set_name():
 def get_pig(lvl=player1.lvl):
     pig.name = pigNames[lvl]
     if lvl == 1:
-        pig.hp = 12
+        pig.hp = 8
         pig.attack = 3
     elif lvl == 2:
         pass
@@ -152,6 +183,9 @@ def get_pig(lvl=player1.lvl):
 def get_item(lvl=player1.lvl - 1):
     ryka.name = items[lvl]
     ryka.about = info[lvl]
+
+def pig_fight():
+    pass
 
 def fight():
     get_pig()
@@ -162,6 +196,7 @@ def fight():
             break
         if turn == 1:
             print("Ход свиньи")
+            pig_fight()
             turn -=1
         if (pig.hp < 2):
             print("Свинья при смерти!")
@@ -173,7 +208,6 @@ def fight():
         if (int(choice) > 5) or (int(choice) < 1):
             eblan()
             continue
-        #1
         if choice == 1:
             attack = get_random(player1.attack)
             pig.hp -= attack
@@ -181,12 +215,10 @@ def fight():
         elif choice == 2:
             hp = get_random(player1.hp)
             health(hp)
-            print("Востановленно {hp} здоровья")
+            print(f"Востановленно {hp} здоровья")
         elif choice == 3:
-            pass
+            chemodanchik()
         elif choice == 4:
-            pass
-        elif choice == 5:
             info = f"""-----------
 {player1.name}:
 HP - {player1.hp}\tAttack - {player1.attack}
