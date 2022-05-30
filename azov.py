@@ -4,7 +4,7 @@ from random import randint
 
 class Player:
     def __init__(self):
-        self.__hp     = 1
+        self.__hp     = 10
         self.__name   = "Player1"
         self.__attack = 4
         self.__lvl    = 1
