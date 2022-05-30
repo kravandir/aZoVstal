@@ -180,13 +180,15 @@ def set_name():
             print("Имя не должно содержать более 30 символов или менее 3 символов!\nПопробуйте еще раз")
     
 def get_pig(lvl=player1.lvl):
-    pig.name = pigNames[lvl]
+    pig.name = pigNames[lvl - 1]
     if lvl == 1:
-        pig.hp     = 8
+        pig.hp     = pig.maxHp = 8
         pig.attack = 3
-        pig.maxHp  = 8
+        
     elif lvl == 2:
-        pass
+        pig.hp     = pig.maxHp = 14 
+        pig.attack = 5
+
 
 def get_item(lvl=player1.lvl - 1):
     ryka.name = items[lvl]
