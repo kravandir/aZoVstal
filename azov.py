@@ -52,12 +52,13 @@ class Player:
     @maxHp.setter
     def maxHp(self, value):
         self.__maxHp = value
-    
+        
 class Pig:
     def __init__(self):
         self.__hp     = 1
         self.__name   = "Small Pig"
         self.__attack = 1
+        self.__maxHp  = 1
 
     @property
     def hp(self):
@@ -82,6 +83,14 @@ class Pig:
     @attack.setter
     def attack(self, attack):
         self.__attack = attack
+    #MAX
+    @property
+    def maxHp(self):
+        return self.__maxHp
+
+    @maxHp.setter
+    def maxHp(self, value):
+        self.__maxHp = value
 
 class Karman:
     def __init__(self):
@@ -121,9 +130,9 @@ def srakaeb(code = False):
         print("Вы не можете использовать лицензию, тк нету сракоеба")
         turn -= 1
     else:
-        print("ЛИЦЕНЗИЯ СРАКОЁБ 2007 АКТИВИРОВАННА")
+        print("ЛИЦЕНЗИЯ СРАКОЁБ 2007 АКТИВИРОВАНА")
         pig.hp -= 999
-        print(f"Сракоёб под рататата 47 ака растрелял {pig.name} и нанёс 999 урона")
+        print(f"Сракоёб под рататата 47 ака расстрелял {pig.name} и нанёс 999 урона")
 
 def banderomobil():
     print("Сев в БАНДЕРОМОБИЛЬ он развалился и вы потеряли два хода чтобы выбраться")
@@ -144,8 +153,6 @@ def eblan(why = "Еблан"):
     print(why)
 
 def health(value):
-    # Checking 
-    print(value)
     if value == 0:
         # 1 means error
         return 1
@@ -153,16 +160,16 @@ def health(value):
     # Checking again
     if value < 0:
         player1.hp += value
+        return 0
 
     elif player1.hp == player1.maxHp:
         return 1
 
-    elif value > 0:
-        temp = (value + player1.hp) - player1.maxHp
-    elif temp <= 0:
-            player1.hp += value
+    temp = (value + player1.hp) - player1.maxHp
+    if temp <= 0:
+        player1.hp += value
     else:
-            player1.hp = player1.maxHp
+        player1.hp = player1.maxHp
 
 def set_name():
     while True:
@@ -175,8 +182,9 @@ def set_name():
 def get_pig(lvl=player1.lvl):
     pig.name = pigNames[lvl]
     if lvl == 1:
-        pig.hp = 8
+        pig.hp     = 8
         pig.attack = 3
+        pig.maxHp  = 8
     elif lvl == 2:
         pass
 
@@ -185,19 +193,30 @@ def get_item(lvl=player1.lvl - 1):
     ryka.about = info[lvl]
 
 def pig_fight():
-    pass
+    temp = randint(1, 5)
+    match temp:
+        case 1 | 2 | 3 | 4 :
+            temp = get_random(pig.attack)
+            attack = (temp - temp) - temp
+            health(attack)
+            print(f"Свинья снесла вам {-attack} здоровья!")
+        case 5:
+            temp = get_random(pig.maxHp)
+            checking = (pig.hp + temp) <= pig.maxHp
+            if checking:
+                pig.hp += temp
+            else:
+                pig.hp = pig.maxHp
+            print(f"Свинья восстановила {temp} здоровья!")
+            
 
 def fight():
     get_pig()
     print(f"Вы встретились с {pig.name}")
     turn = 0 # 1 - свиньи ход, 0 наш, если чет не так то капец
-    while (player1.hp > 0):
-        if (pig.hp < 0):
+    while True:
+        if pig.hp <= 0 or player1.hp <= 0:
             break
-        if turn == 1:
-            print("Ход свиньи")
-            pig_fight()
-            turn -=1
         if (pig.hp < 2):
             print("Свинья при смерти!")
         choice = input(doing)
@@ -213,9 +232,9 @@ def fight():
             pig.hp -= attack
             print(f"Вы снесли свинье {attack} здоровья")
         elif choice == 2:
-            hp = get_random(player1.hp)
+            hp = get_random(player1.maxHp) - 3
             health(hp)
-            print(f"Востановленно {hp} здоровья")
+            print(f"Восстановлено {hp} здоровья")
         elif choice == 3:
             chemodanchik()
         elif choice == 4:
@@ -230,13 +249,15 @@ HP - {pig.hp}\tAttack - {pig.attack}
 
             print(info)
             turn -=1
-        if player1.hp > 0:
-            ok = 1
-        else:
-            ok = 0
         turn += 1
+        if turn == 1:
+            print("Ход свиньи")
+            pig_fight()
+            turn -=1
+        
+        
 
-    if player1.hp < 0:
+    if player1.hp <= 0:
         print("Свинья убила тебя... Ну ты и лох канешн")
 
 def get_random(value):
