@@ -4,7 +4,7 @@ from random import randint
 
 class Player:
     def __init__(self):
-        self.__hp     = 10
+        self.__hp     = 1
         self.__name   = "Player1"
         self.__attack = 4
         self.__lvl    = 1
@@ -250,15 +250,17 @@ HP - {pig.hp}\tAttack - {pig.attack}
             print(info)
             turn -=1
         turn += 1
+        if pig.hp <= 0 or player1.hp <= 0:
+            break
+
         if turn == 1:
             print("Ход свиньи")
             pig_fight()
             turn -=1
-        
-        
 
     if player1.hp <= 0:
         print("Свинья убила тебя... Ну ты и лох канешн")
+        exit("lox")
 
 def get_random(value):
     Real = value
