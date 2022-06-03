@@ -8,7 +8,7 @@ class Player:
         self.__name   = "Player1"
         self.__attack = 4
         self.__lvl    = 0
-
+        self.__items  = []
         self.__maxHp     = 10
 
     @property
@@ -43,7 +43,14 @@ class Player:
     def lvl(self, value):
         self.__lvl = value
 
-    #MAX
+    @property
+    def items(self):
+        return self.__items
+
+    @items.setter
+    def items(self, itemID): 
+        self.__items.append(itemID)
+
     @property
     def maxHp(self):
         return self.__maxHp
@@ -91,16 +98,11 @@ class Pig:
     def maxHp(self, value):
         self.__maxHp = value
 
-class Karman:
-    def __init__(self):
-        self.name = "CSS content"
-        self.about = "NOT FOUND"
 # }
 
 
 player1 = Player()
 pig     = Pig()
-ryka    = Karman()
 
 # vars {
 
@@ -190,9 +192,20 @@ def get_pig(lvl=player1.lvl):
 
 
 def get_item(lvl=player1.lvl):
-    ryka.name = items[lvl]
-    ryka.about = info[lvl]
-    print(f"{player1.name} подобрал с трупа свинки {ryka.name}")
+    player1.items = lvl
+    print(f"{player1.name} подобрал с трупа свинки {items[lvl]}")
+
+def return_items(beautiful = False):
+    a = []
+    if len(player1.items) == 0:
+        return "None"
+    for i in player1.items:
+        a.append(items[i])
+    a = str(a)
+    if beautiful == True:
+        for i in "[", "]", "\'":
+            a = a.replace(i, "")
+    return a
 
 def use_item():
     pass
@@ -246,7 +259,7 @@ def fight():
             info = f"""-----------
 {player1.name}:
 HP - {player1.hp} \t Attack - {player1.attack}
-Level - {player1.lvl} \t Item - {ryka.name}
+Level - {player1.lvl} \t Items - {return_items(True)}
 -----------
 {pig.name}:
 HP - {pig.hp}\tAttack - {pig.attack}
@@ -286,5 +299,5 @@ def main():
     
     print("Уровень первый: вход в подземелья")
     fight()
-        
+    fight()
 main()
