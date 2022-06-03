@@ -1,4 +1,5 @@
 from random import randint
+from webbrowser import get
 
 # CLASSES {
 
@@ -48,7 +49,7 @@ class Player:
         return self.__items
 
     @items.setter
-    def items(self, itemID): 
+    def items(self, itemID):
         self.__items.append(itemID)
 
     @property
@@ -58,7 +59,7 @@ class Player:
     @maxHp.setter
     def maxHp(self, value):
         self.__maxHp = value
-        
+
 class Pig:
     def __init__(self):
         self.__hp     = 1
@@ -107,7 +108,7 @@ pig     = Pig()
 # vars {
 
 doing = """
-Выберите действие: 
+Выберите действие:
 1 - Атака\t2 - Восстановить здоровье
 3 - Использовать предмет\t4 - Общая информация
 >>> """
@@ -148,8 +149,32 @@ def chemodanchik():
     print(f"Едва {player1.name} открыл чемоданчик всю азовсталь озарила яркая вспышка. Нет, в чемодане не было противопехотной мины. Правительство США знало что в этом чемодане находились бипки, и если бы хоть одна до них до коснулась до восставшего из ада Бандеры, она бы впитала в себя всю мощь ада. Бидон не мог допустить этого и приказал сбросить ядерную боеголовку на Азовсталь. Ваш персонаж умер, но память о нём будет вечна...")
     exit(0)
 
-# }
+# } items {
+def get_item(lvl=player1.lvl):
+    player1.items = lvl
+    print(f"{player1.name} подобрал с трупа свинки {items[lvl]}")
 
+def return_items(beautiful = False):
+    a = []
+    if len(player1.items) == 0:
+        return "None"
+    for i in player1.items:
+        a.append(items[i])
+    a = str(a)
+    if beautiful == True:
+        for i in "[", "]", "\'":
+            a = a.replace(i, "")
+    return a
+
+def use_item():
+    print("Выберите предмет:")
+    a = 0
+    for i in player1.items:
+        print(f"{a + 1} - {items[i]}")
+        a += 1
+    print("0 - Выбрать другое действие")
+    choose = int(input(">>> "))
+#}
 def eblan(why = "Еблан"):
     print(why)
 
@@ -157,7 +182,7 @@ def health(value):
     if value == 0:
         # 1 means error
         return 1
-    
+
     # Checking again
     if value < 0:
         player1.hp += value
@@ -179,36 +204,16 @@ def set_name():
             return name
         else:
             print("Имя не должно содержать более 30 символов или менее 3 символов!\nПопробуйте еще раз")
-    
+
 def get_pig(lvl=player1.lvl):
     pig.name = pigNames[lvl]
     if lvl == 0:
         pig.hp     = pig.maxHp = 8
         pig.attack = 3
-        
+
     elif lvl == 1:
-        pig.hp     = pig.maxHp = 14 
+        pig.hp     = pig.maxHp = 14
         pig.attack = 5
-
-
-def get_item(lvl=player1.lvl):
-    player1.items = lvl
-    print(f"{player1.name} подобрал с трупа свинки {items[lvl]}")
-
-def return_items(beautiful = False):
-    a = []
-    if len(player1.items) == 0:
-        return "None"
-    for i in player1.items:
-        a.append(items[i])
-    a = str(a)
-    if beautiful == True:
-        for i in "[", "]", "\'":
-            a = a.replace(i, "")
-    return a
-
-def use_item():
-    pass
 
 def pig_fight():
     temp = randint(1, 5)
@@ -226,7 +231,7 @@ def pig_fight():
             else:
                 pig.hp = pig.maxHp
             print(f"Свинья восстановила {temp} здоровья!")
-            
+
 
 def fight():
     get_pig()
@@ -254,7 +259,7 @@ def fight():
             health(hp)
             print(f"Восстановлено {hp} здоровья")
         elif choice == 3:
-            chemodanchik()
+            use_item()
         elif choice == 4:
             info = f"""-----------
 {player1.name}:
@@ -278,7 +283,7 @@ HP - {pig.hp}\tAttack - {pig.attack}
 
     if player1.hp <= 0:
         print("Свинья убила тебя... Ну ты и лох канешн")
-        exit("lox")
+        exit(0)
     else:
         print(f"Ты победил {pig.name}, харош.")
         player1.lvl += 1
@@ -292,12 +297,11 @@ def get_random(value):
 # }
 
 def main():
-    
+
     print("Добро пожаловать на аZoVсталь!")
-    
+
     player1.name = set_name()
-    
+
     print("Уровень первый: вход в подземелья")
-    fight()
     fight()
 main()
