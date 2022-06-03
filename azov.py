@@ -7,10 +7,9 @@ class Player:
         self.__hp     = 10
         self.__name   = "Player1"
         self.__attack = 4
-        self.__lvl    = 1
+        self.__lvl    = 0
 
         self.__maxHp     = 10
-        self.__maxAttack = 5
 
     @property
     def hp(self):
@@ -110,20 +109,20 @@ doing = """
 1 - Атака\t2 - Восстановить здоровье
 3 - Использовать предмет\t4 - Общая информация
 >>> """
-pigNames = ["Big Pig", "Xoxlobot",               "Poklonik Banderi",      "mr Zelensky", "Раненный Иван" "BANDERA"]
-items =    ["Сало",    "Лицензия на сракоёб 2007", "бандеромобиль 2599",  "Мефедрон",    "Чемоданчик"]
-info = ["Кусок сала", "Долмат сдох, поэтому сракоёб потерян навсегда...", "Вот эта хуйня изобретена укропами блять. Взята буквально с боем блять нахуй. Вот вы можете представить себе больное воображение человека который эту ебалу создал.", "Его еще не успел занюхать Zеленский", "ДАВАЙ ДАВАЙ ДАВАЙ УРА"]
-item = "empty"
-info = "empty"
+pigNames = ["Big Pig",            "Xoxlobot",                 "Poklonik Banderi",      "mr Zelensky", "Раненный Иван" "BANDERA"]
+items =    ["Стиральная машинка", "Лицензия на сракоёб 2007", "бандеромобиль 2599",  "Мефедрон",    "Чемоданчик"]
+info = ["Что это? На Руси такого никогда не было...", "Долмат сдох, поэтому сракоёб потерян навсегда...", "Вот эта хуйня изобретена укропами блять. Взята буквально с боем блять нахуй. Вот вы можете представить себе больное воображение человека который эту ебалу создал.", "Его еще не успел занюхать Zеленский", "ДАВАЙ ДАВАЙ ДАВАЙ УРА"]
 turn = 0
 ending = True
 code = False
 
 # } shit {
 # items {
-def salo():
-    turn -= 2
-    print("Свинья отвлеклась на сало и пропускает 2 хода")
+def stiralka():
+    print("Забравшись в стиралку вы внезапно почуяли мощь в своих руках и вышли оттуда настоящим богатырём")
+    player1.attack += 2
+    player1.maxHp  += 2
+
 
 def srakaeb(code = False):
     if code == False:
@@ -180,19 +179,23 @@ def set_name():
             print("Имя не должно содержать более 30 символов или менее 3 символов!\nПопробуйте еще раз")
     
 def get_pig(lvl=player1.lvl):
-    pig.name = pigNames[lvl - 1]
-    if lvl == 1:
+    pig.name = pigNames[lvl]
+    if lvl == 0:
         pig.hp     = pig.maxHp = 8
         pig.attack = 3
         
-    elif lvl == 2:
+    elif lvl == 1:
         pig.hp     = pig.maxHp = 14 
         pig.attack = 5
 
 
-def get_item(lvl=player1.lvl - 1):
+def get_item(lvl=player1.lvl):
     ryka.name = items[lvl]
     ryka.about = info[lvl]
+    print(f"{player1.name} подобрал с трупа свинки {ryka.name}")
+
+def use_item():
+    pass
 
 def pig_fight():
     temp = randint(1, 5)
@@ -242,8 +245,8 @@ def fight():
         elif choice == 4:
             info = f"""-----------
 {player1.name}:
-HP - {player1.hp}\tAttack - {player1.attack}
-Level - {player1.lvl}\tItem - {ryka.name}
+HP - {player1.hp} \t Attack - {player1.attack}
+Level - {player1.lvl} \t Item - {ryka.name}
 -----------
 {pig.name}:
 HP - {pig.hp}\tAttack - {pig.attack}
@@ -263,6 +266,10 @@ HP - {pig.hp}\tAttack - {pig.attack}
     if player1.hp <= 0:
         print("Свинья убила тебя... Ну ты и лох канешн")
         exit("lox")
+    else:
+        print(f"Ты победил {pig.name}, харош.")
+        player1.lvl += 1
+        get_item()
 
 def get_random(value):
     Real = value
