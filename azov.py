@@ -9,8 +9,8 @@ class Player:
         self.__name   = "Player1"
         self.__attack = 4
         self.__lvl    = 0
-        self.__items  = []
-        self.__maxHp     = 10
+        self.items    = []
+        self.__maxHp  = 10
 
     @property
     def hp(self):
@@ -43,14 +43,6 @@ class Player:
     @lvl.setter
     def lvl(self, value):
         self.__lvl = value
-
-    @property
-    def items(self):
-        return self.__items
-
-    @items.setter
-    def items(self, itemID):
-        self.__items.append(itemID)
 
     @property
     def maxHp(self):
@@ -151,29 +143,39 @@ def chemodanchik():
 
 # } items {
 def get_item(lvl=player1.lvl):
-    player1.items = lvl
+    player1.items.append(lvl)
     print(f"{player1.name} подобрал с трупа свинки {items[lvl]}")
 
-def return_items(beautiful = False):
-    a = []
-    if len(player1.items) == 0:
-        return "None"
-    for i in player1.items:
-        a.append(items[i])
-    a = str(a)
-    if beautiful == True:
-        for i in "[", "]", "\'":
-            a = a.replace(i, "")
-    return a
-
 def use_item():
-    print("Выберите предмет:")
-    a = 0
-    for i in player1.items:
-        print(f"{a + 1} - {items[i]}")
-        a += 1
-    print("0 - Выбрать другое действие")
-    choose = int(input(">>> "))
+    while True:
+        print("Выберите предмет:")
+        a = 0
+        for i in player1.items:
+            print(f"{a + 1} - {items[i]}")
+            a += 1
+        print("0 - Выбрать другое действие")
+        choose = int(input(">>> "))
+        if choose > a:
+            eblan()
+            continue
+        if choose <= 0:
+            break
+        index = choose - 1
+        choose = items[player1.items[choose - 1]]
+        print(choose)
+        match choose:
+            case "Стиральная машинка":
+                stiralka()
+            case "Лицензия на сракоёб 2007":
+                srakaeb()
+            case "бандеромобиль 2599":
+                banderomobil()
+            case "Мефедрон":
+                meth()
+            case "Чемоданчик":
+                chemodanchik()
+        player1.items.remove(index)
+        break
 #}
 def eblan(why = "Еблан"):
     print(why)
@@ -247,7 +249,7 @@ def fight():
             eblan()
             continue
         choice = int(choice)
-        if (int(choice) > 5) or (int(choice) < 1):
+        if (int(choice) > 4) or (int(choice) < 1):
             eblan()
             continue
         if choice == 1:
@@ -260,11 +262,12 @@ def fight():
             print(f"Восстановлено {hp} здоровья")
         elif choice == 3:
             use_item()
+            turn -= 1
         elif choice == 4:
             info = f"""-----------
 {player1.name}:
 HP - {player1.hp} \t Attack - {player1.attack}
-Level - {player1.lvl} \t Items - {return_items(True)}
+Level - {player1.lvl} \t MaxHp - {player1.maxHp}
 -----------
 {pig.name}:
 HP - {pig.hp}\tAttack - {pig.attack}
@@ -303,5 +306,7 @@ def main():
     player1.name = set_name()
 
     print("Уровень первый: вход в подземелья")
+    fight()
+    fight()
     fight()
 main()
