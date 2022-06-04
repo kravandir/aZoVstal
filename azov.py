@@ -153,7 +153,11 @@ def use_item():
             print(f"{a + 1} - {items[i]}")
             a += 1
         print("0 - Выбрать другое действие")
-        choose = int(input(">>> "))
+        choose = input(">>> ")
+        if not (choose.isdigit()):
+            eblan()
+            continue
+        choose = int(choose)
         if choose > a:
             eblan()
             continue
