@@ -1,4 +1,13 @@
 from random import randint
+import os
+#CHECK
+version = os.popen('python3 --version')
+version = version.read()
+version = version.strip("Python ")
+version = int(version.replace(".", ""))
+if version < 3100:
+    print("НЕОБХОДИМА ВЕРСИЯ 3.10 ПИЗДУЙ НАХУЙ")
+    exit(-1)
 
 # CLASSES {
 
@@ -204,21 +213,25 @@ def health(value):
 
 def set_name():
     while True:
-        name = input("Введите своё имя: ")
+        name = str(input("Введите своё имя: "))
+        if name.isspace():
+            eblan()
         if len(name) < 30 and len(name) > 2:
             return name
         else:
             print("Имя не должно содержать более 30 символов или менее 3 символов!\nПопробуйте еще раз")
 
-def get_pig(lvl=player1.lvl):
+def get_pig(lvl):
     pig.name = pigNames[lvl]
     if lvl == 0:
         pig.hp     = pig.maxHp = 8
         pig.attack = 3
-
     elif lvl == 1:
-        pig.hp     = pig.maxHp = 14
+        pig.hp     = pig.maxHp = 23
         pig.attack = 5
+    elif lvl == 2:
+        pass
+
 
 def pig_fight():
     temp = randint(1, 5)
@@ -239,7 +252,7 @@ def pig_fight():
 
 
 def fight():
-    get_pig()
+    get_pig(player1.lvl)
     print(f"Вы встретились с {pig.name}")
     turn = 0 # 1 - свиньи ход, 0 наш, если чет не так то капец
     while True:
