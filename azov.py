@@ -1,14 +1,4 @@
 from random import randint
-import os
-#CHECK
-version = os.popen('python3 --version')
-version = version.read()
-version = version.strip("Python ")
-version = int(version.replace(".", ""))
-if version < 3100:
-    print("НЕОБХОДИМА ВЕРСИЯ 3.10 ПИЗДУЙ НАХУЙ")
-    exit(-1)
-
 # CLASSES {
 
 class Player:
