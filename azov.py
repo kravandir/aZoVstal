@@ -4,9 +4,9 @@ from time import sleep
 
 class Player:
     def __init__(self):
-        self.hp     = 120
+        self.hp     = 12
         self.name   = "Player1"
-        self.attack = 40
+        self.attack = 4
         self.lvl    = 0
         self.items    = []
         self.maxHp  = 10
