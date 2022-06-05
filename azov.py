@@ -1,94 +1,23 @@
 from random import randint
+from time import sleep
 # CLASSES {
 
 class Player:
     def __init__(self):
-        self.__hp     = 10
-        self.__name   = "Player1"
-        self.__attack = 4
-        self.__lvl    = 0
+        self.hp     = 120
+        self.name   = "Player1"
+        self.attack = 40
+        self.lvl    = 0
         self.items    = []
-        self.__maxHp  = 10
-
-    @property
-    def hp(self):
-        return self.__hp
-
-    @hp.setter
-    def hp(self, value):
-        self.__hp = value
-
-    @property
-    def name(self):
-        return self.__name
-
-    @name.setter
-    def name(self, name):
-        self.__name = name
-
-    @property
-    def attack(self):
-        return self.__attack
-
-    @attack.setter
-    def attack(self, attack):
-        self.__attack = attack
-
-    @property
-    def lvl(self):
-        return self.__lvl
-
-    @lvl.setter
-    def lvl(self, value):
-        self.__lvl = value
-
-    @property
-    def maxHp(self):
-        return self.__maxHp
-
-    @maxHp.setter
-    def maxHp(self, value):
-        self.__maxHp = value
+        self.maxHp  = 10
+        self.code   = False
 
 class Pig:
     def __init__(self):
-        self.__hp     = 1
-        self.__name   = "Small Pig"
-        self.__attack = 1
-        self.__maxHp  = 1
-
-    @property
-    def hp(self):
-        return self.__hp
-
-    @hp.setter
-    def hp(self, value):
-        self.__hp = value
-
-    @property
-    def name(self):
-        return self.__name
-
-    @name.setter
-    def name(self, name):
-        self.__name = name
-
-    @property
-    def attack(self):
-        return self.__attack
-
-    @attack.setter
-    def attack(self, attack):
-        self.__attack = attack
-    #MAX
-    @property
-    def maxHp(self):
-        return self.__maxHp
-
-    @maxHp.setter
-    def maxHp(self, value):
-        self.__maxHp = value
-
+        self.hp     = 1
+        self.name   = "Small Pig"
+        self.attack = 1
+        self.maxHp  = 1
 # }
 
 
@@ -102,12 +31,10 @@ doing = """
 1 - Атака\t2 - Восстановить здоровье
 3 - Использовать предмет\t4 - Общая информация
 >>> """
-pigNames = ["Big Pig",            "Xoxlobot",                 "Poklonik Banderi",      "mr Zelensky", "Раненный Иван" "BANDERA"]
+pigNames = ["Big Pig",            "Xoxlobot",                 "Poklonik Banderi",      "mr Zelensky", "BANDERA"]
 items =    ["Стиральная машинка", "Лицензия на сракоёб 2007", "бандеромобиль 2599",  "Мефедрон",    "Чемоданчик"]
 info = ["Что это? На Руси такого никогда не было...", "Долмат сдох, поэтому сракоёб потерян навсегда...", "Вот эта хуйня изобретена укропами блять. Взята буквально с боем блять нахуй. Вот вы можете представить себе больное воображение человека который эту ебалу создал.", "Его еще не успел занюхать Zеленский", "ДАВАЙ ДАВАЙ ДАВАЙ УРА"]
 turn = 0
-ending = True
-code = False
 
 # } shit {
 # items {
@@ -118,21 +45,20 @@ def stiralka():
 
 
 def srakaeb(code = False):
-    if code == False:
+    if not player1.code:
         print("Вы не можете использовать лицензию, тк нету сракоеба")
-        turn -= 1
+        player1.items.insert(2, items[int(1)])
     else:
         print("ЛИЦЕНЗИЯ СРАКОЁБ 2007 АКТИВИРОВАНА")
         pig.hp -= 999
         print(f"Сракоёб под рататата 47 ака расстрелял {pig.name} и нанёс 999 урона")
 
 def banderomobil():
-    print("Сев в БАНДЕРОМОБИЛЬ он развалился и вы потеряли два хода чтобы выбраться")
-    turn +=2
+    print("БАНДЕРОМОБИЛЬ развалился на ваших глазах. Но вы внезапно нашли там Васю Долмата и заставили выдать секрет где сурсы сракоёба")
+    player1.code = True
 
 def meth():
-    turn -= 2
-    print("Свинка занюхнула меф и осталась без сознания на 2 хода")
+    print("Занюхнув вы ничего не почувствовали. Так вот наверно почему Zеленский такой злой был!")
 
 def chemodanchik():
     pig.hp = -1
@@ -141,7 +67,7 @@ def chemodanchik():
 
 # } items {
 def get_item(lvl=player1.lvl):
-    player1.items.append(lvl)
+    player1.items.append(items[lvl])
     print(f"{player1.name} подобрал с трупа свинки {items[lvl]}")
 
 def use_item():
@@ -149,7 +75,8 @@ def use_item():
         print("Выберите предмет:")
         a = 0
         for i in player1.items:
-            print(f"{a + 1} - {items[i]}")
+            index = items.index(i)
+            print(f"{a + 1} - {i} ({info[index]})")
             a += 1
         print("0 - Выбрать другое действие")
         choose = input(">>> ")
@@ -163,7 +90,7 @@ def use_item():
         if choose <= 0:
             break
         index = choose - 1
-        choose = items[player1.items[choose - 1]]
+        choose = player1.items[index]
         print(choose)
         match choose:
             case "Стиральная машинка":
@@ -176,11 +103,14 @@ def use_item():
                 meth()
             case "Чемоданчик":
                 chemodanchik()
-        player1.items.remove(index)
+        player1.items.remove(choose)
         break
 #}
 def eblan(why = "Еблан"):
     print(why)
+
+def story(str):
+    input(f"{str}\nНажмите Enter чтобы продолжить...")
 
 def health(value):
     if value == 0:
@@ -188,18 +118,18 @@ def health(value):
         return 1
 
     # Checking again
-    if value < 0:
+    elif value < 0:
         player1.hp += value
         return 0
 
     elif player1.hp == player1.maxHp:
         return 1
 
-    temp = (value + player1.hp) - player1.maxHp
-    if temp <= 0:
-        player1.hp += value
-    else:
+    player1.hp += value
+    print(player1.hp)
+    if player1.hp > player1.maxHp:
         player1.hp = player1.maxHp
+    print(f"Здоровье восстановлено до {player1.hp} единиц")
 
 def set_name():
     while True:
@@ -211,16 +141,28 @@ def set_name():
         else:
             print("Имя не должно содержать более 30 символов или менее 3 символов!\nПопробуйте еще раз")
 
+def new_lvl(points=2):
+    player1.hp     += points
+    player1.maxHp  += points
+    player1.attack += points
+
 def get_pig(lvl):
     pig.name = pigNames[lvl]
     if lvl == 0:
         pig.hp     = pig.maxHp = 8
         pig.attack = 3
     elif lvl == 1:
-        pig.hp     = pig.maxHp = 23
-        pig.attack = 5
+        pig.hp     = pig.maxHp = 18
+        pig.attack = 4
     elif lvl == 2:
-        pass
+        pig.hp     = pig.maxHp = 23
+        pig.attack = 6
+    elif lvl == 3:
+        pig.hp     = pig.maxHp = 26
+        pig.attack = 6
+    elif lvl == 4:
+        pig.hp     = pig.maxHp = 1000
+        pig.attack = 12
 
 
 def pig_fight():
@@ -233,11 +175,11 @@ def pig_fight():
             print(f"Свинья снесла вам {-attack} здоровья!")
         case 5:
             temp = get_random(pig.maxHp)
-            checking = (pig.hp + temp) <= pig.maxHp
-            if checking:
-                pig.hp += temp
-            else:
+            temp = temp + pig.hp
+            if temp > pig.maxHp:
                 pig.hp = pig.maxHp
+            else:
+                pig.hp = temp
             print(f"Свинья восстановила {temp} здоровья!")
 
 
@@ -265,7 +207,6 @@ def fight():
         elif choice == 2:
             hp = get_random(player1.maxHp) - 3
             health(hp)
-            print(f"Восстановлено {hp} здоровья")
         elif choice == 3:
             use_item()
             turn -= 1
@@ -287,6 +228,7 @@ HP - {pig.hp}\tAttack - {pig.attack}
 
         if turn == 1:
             print("Ход свиньи")
+            sleep(1)
             pig_fight()
             turn -=1
 
@@ -296,7 +238,9 @@ HP - {pig.hp}\tAttack - {pig.attack}
     else:
         print(f"Ты победил {pig.name}, харош.")
         player1.lvl += 1
-        get_item()
+        get_item(player1.lvl - 1)
+        new_lvl()
+        print("-----------")
 
 def get_random(value):
     Real = value
@@ -310,9 +254,18 @@ def main():
     print("Добро пожаловать на аZoVсталь!")
 
     player1.name = set_name()
-
-    print("Уровень первый: вход в подземелья")
+    
+    story(f"Вы очнулись в коридоре какого-то здания. Вы смутно помните что ваше имя {player1.name} и вам надо выполнить какую-то важную миссию на аZoVstal'и. Вы встаёте и проходите в ближайшую дверь и видите солдата ВСУ, который как вы припоминаете из задания охраняет проход в подземелья. Do you like hurt other people?")
     fight()
+    story("Расправившись с охраной вы прошли дальше. Спускаясь по катакомбам вы встречаете множество трупов как русских так и украинских солдат. Поворачивая за поворот вы видите двух всушников. Пробраться тихо не получится,придется вступить в бой.")
     fight()
+    story("Второй ВСУшник в страхе убежал от вас. Идя дальше вы заметили лифт. Зайдя вы увидели лишь одну кнопку и не думая нажали её. Двери лифта захлопнулись и спустя пару мгновений вы приехали в странное место. Везде флаги нацисткой германии, бандер, портреты гитлера а посреди всего этого темного места статуя Степана Хрюндеры. На коленях перед ней в темном балахоне кто-то читает древние заклинания шепотом. Вы понимаете, что он хочет вызвать дух Бандеры и его надо срочно загасить!")
     fight()
+    story("\"Поздно!\" - Закричал из-за всех сил умирающий темнокнижник. Эхо наверняка разнеслось по всему подземелью но никто не пришел. Продолжив свой путь вы нашли две двери. Решив зайти в правую вы увидели там обдолбанного Zеленского. Заорав он набросился на вас но вы его с легкостью оттолкнули")
+    fight()
+    get_item(4)
+    story("Чемоданчик... Ядерный наверное. И надпись на нем 'откроешь - прилетит боеголовка'. Выйдя из кабинета в раздумьях и зайдя в другую дверь вы ужаснулись. По всему залу лежали мертвые темнокнижники, а в середине стоял он. Хрюндера. Обвисшие куски мяса и кости торчащие из колен навели бы на кого угодно ужас, но только не на вас.")
+    fight()
+    print("Победив эту хуеблуду она заорала так, что вы оглохли и разорвалась на мелкие части. Пройдя в следующую комнату вы нашли выход на поверхность. Там вас уже ждал вертолёт и вы получили звание героя РФ. Хорошая концовка")
+    input("(представьте что тут идут титры и эпичная музыка)\n")
 main()
