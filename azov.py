@@ -92,17 +92,16 @@ def use_item():
         index = choose - 1
         choose = player1.items[index]
         print(choose)
-        match choose:
-            case "Стиральная машинка":
-                stiralka()
-            case "Лицензия на сракоёб 2007":
-                srakaeb()
-            case "бандеромобиль 2599":
-                banderomobil()
-            case "Мефедрон":
-                meth()
-            case "Чемоданчик":
-                chemodanchik()
+        if choose == "Стиральная машинка":
+            stiralka()
+        elif choose == "Лицензия на сракоёб 2007":
+                srakaeb() 
+        elif choose == "бандеромобиль 2599":
+            banderomobil()
+        elif choose == "Мефедрон":
+            meth()
+        elif choose == "Чемоданчик":
+            chemodanchik()
         player1.items.remove(choose)
         break
 #}
@@ -167,20 +166,19 @@ def get_pig(lvl):
 
 def pig_fight():
     temp = randint(1, 5)
-    match temp:
-        case 1 | 2 | 3 | 4 :
-            temp = get_random(pig.attack)
-            attack = (temp - temp) - temp
-            health(attack)
-            print(f"Свинья снесла вам {-attack} здоровья!")
-        case 5:
-            temp = get_random(pig.maxHp)
-            temp = temp + pig.hp
-            if temp > pig.maxHp:
-                pig.hp = pig.maxHp
-            else:
-                pig.hp = temp
-            print(f"Свинья восстановила {temp} здоровья!")
+    if temp == 1 or temp == 2 or temp == 3 or temp == 4:
+        temp = get_random(pig.attack)
+        attack = (temp - temp) - temp
+        health(attack)
+        print(f"Свинья снесла вам {-attack} здоровья!")
+    elif temp == 5:
+        temp = get_random(pig.maxHp)
+        temp = temp + pig.hp
+        if temp > pig.maxHp:
+            pig.hp = pig.maxHp
+        else:
+            pig.hp = temp
+        print(f"Свинья восстановила {temp} здоровья!")
 
 
 def fight():
